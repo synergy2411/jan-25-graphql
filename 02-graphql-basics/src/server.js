@@ -1,29 +1,31 @@
 import { createSchema, createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
 
+const users = [
+  { id: "u001", name: "monica geller", age: 21 },
+  { id: "u002", name: "rachel green", age: 22 },
+  { id: "u003", name: "chandler bing", age: 24 },
+];
 // Scalar Types - String, Int, Boolean, Float and ID
 
 // typeDefs - define capabilities of server
-const typeDefs = `
-    type Query {
-        hello: String!
-        age: Int
-        isAdmin: Boolean
-        salary: Float
-        userId: ID
-        friends: [String!]!
-    }
+const typeDefs = /* GraphQL */ `
+  type Query {
+    hello: String!
+    users: [User!]!
+  }
+  type User {
+    id: ID!
+    name: String!
+    age: Int!
+  }
 `;
 
 // resolvers - implementation of typeDefs
 const resolvers = {
   Query: {
     hello: () => "World!",
-    age: () => 23,
-    isAdmin: () => true,
-    salary: () => 123.34,
-    userId: () => "jsdh-76576-sdfsdf-sd878",
-    friends: () => ["Joey", null, "Ross", "Rachel"],
+    users: () => users,
   },
 };
 
