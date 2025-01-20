@@ -25,6 +25,13 @@ const posts = [
   },
 ];
 
+const comments = [
+  { id: "c001", text: "like it" },
+  { id: "c002", text: "luv it" },
+  { id: "c003", text: "just like that" },
+  { id: "c004", text: "not bad" },
+];
+
 // Scalar Types - String, Int, Boolean, Float and ID
 
 // typeDefs - define capabilities of server
@@ -33,6 +40,7 @@ const typeDefs = /* GraphQL */ `
     hello: String!
     users(query: String, order: String): [User!]!
     posts(query: String): [Post!]!
+    comments: [Comment!]!
   }
   type User {
     id: ID!
@@ -44,6 +52,10 @@ const typeDefs = /* GraphQL */ `
     title: String!
     body: String!
     published: Boolean!
+  }
+  type Comment {
+    id: ID
+    text: String!
   }
 `;
 
@@ -93,6 +105,9 @@ const resolvers = {
         );
       }
       return posts;
+    },
+    comments: (parent, args, context, info) => {
+      return comments;
     },
   },
 };
