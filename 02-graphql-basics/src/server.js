@@ -68,6 +68,7 @@ const typeDefs = /* GraphQL */ `
     body: String!
     published: Boolean!
     comments: [Comment!]!
+    author: User!
   }
   type Comment {
     id: ID
@@ -134,6 +135,9 @@ const resolvers = {
   Post: {
     comments: (parent, args, context, info) => {
       return comments.filter((comment) => comment.postId === parent.id);
+    },
+    author: (parent, args, context, info) => {
+      return users.find((user) => user.id === parent.author);
     },
   },
 };
