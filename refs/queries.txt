@@ -76,3 +76,49 @@ query fetchComments{
     }
   }
 }
+
+# Fetching users -> posts -> comments -> creator
+
+query fetchUsers{
+  users{
+    id
+    name
+    age
+ 		posts{
+      id
+      title
+      comments{
+        id
+        text
+        creator{
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+
+# Fetching posts -> comments -> creator -> comments
+
+query fetchPosts{
+  posts{
+    id
+    title
+    body
+    published
+    comments{
+      id
+      text
+      creator{
+        id
+        name
+        comments{
+          id
+          text
+        }
+      }
+    }
+  }
+}
