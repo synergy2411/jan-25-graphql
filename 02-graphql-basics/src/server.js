@@ -56,6 +56,7 @@ let comments = [
 const typeDefs = /* GraphQL */ `
   type Mutation {
     createUser(name: String!, age: Int!): User!
+    deleteUser(userId: ID!): User!
     createPost(authorId: ID!, title: String!, body: String!): Post!
     deletePost(postId: ID!): Post!
     createComment(data: CreateCommentInput): Comment!
@@ -109,6 +110,28 @@ const resolvers = {
       };
       users.push(newUser);
       return newUser;
+    },
+    deleteUser: (parent, args, context, info) => {
+      const position = users.findIndex((user) => user.id === args.userId);
+      if (position === -1) {
+        throw new GraphQLError("Unable to delete user for id - " + args.userId);
+      }
+
+      // delete Post
+      posts = posts.filter((post) => {
+        const isMatch = post.author === args.userId;
+        if (isMatch) {
+          comments = comments.filter((comment) => comment.postId !== post.id);
+        }
+        return !isMatch;
+      });
+      // delete Comment
+      comments = comments.filter((comment) => comment.creator !== args.userId);
+
+      // delete User
+      const [deletedUser] = users.splice(position, 1);
+
+      return deletedUser;
     },
     createPost: (parent, args, context, info) => {
       const { authorId, title, body } = args;
