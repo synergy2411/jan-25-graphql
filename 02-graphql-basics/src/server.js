@@ -73,6 +73,7 @@ const typeDefs = /* GraphQL */ `
   type Comment {
     id: ID
     text: String!
+    post: Post!
   }
 `;
 
@@ -138,6 +139,11 @@ const resolvers = {
     },
     author: (parent, args, context, info) => {
       return users.find((user) => user.id === parent.author);
+    },
+  },
+  Comment: {
+    post: (parent, args, context, info) => {
+      return posts.find((post) => post.id === parent.postId);
     },
   },
 };

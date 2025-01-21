@@ -62,3 +62,17 @@ query fetchPosts{
     }
   }
 }
+
+# Fetching comments -> posts
+query fetchComments{
+  comments{
+    id
+    text
+    post{
+      id
+      title
+      body
+      published
+    }
+  }
+}
