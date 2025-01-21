@@ -24,3 +24,23 @@ query fetchComments{
     text
   }
 }
+
+
+# Fetching users -> posts -> comments
+query fetchUsers{
+  users{
+    id
+    name
+    age
+    posts{
+      id
+      title
+      body
+      published
+      comments{
+        id
+        text
+      }
+    }
+  }
+}

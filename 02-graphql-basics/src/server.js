@@ -40,10 +40,10 @@ const posts = [
 ];
 
 const comments = [
-  { id: "c001", text: "like it" },
-  { id: "c002", text: "luv it" },
-  { id: "c003", text: "just like that" },
-  { id: "c004", text: "not bad" },
+  { id: "c001", text: "like it", postId: "p004" },
+  { id: "c002", text: "luv it", postId: "p002" },
+  { id: "c003", text: "just like that", postId: "p004" },
+  { id: "c004", text: "not bad", postId: "p003" },
 ];
 
 // Scalar Types - String, Int, Boolean, Float and ID
@@ -67,6 +67,7 @@ const typeDefs = /* GraphQL */ `
     title: String!
     body: String!
     published: Boolean!
+    comments: [Comment!]!
   }
   type Comment {
     id: ID
@@ -128,6 +129,11 @@ const resolvers = {
   User: {
     posts: (parent, args, context, info) => {
       return posts.filter((post) => post.author === parent.id);
+    },
+  },
+  Post: {
+    comments: (parent, args, context, info) => {
+      return comments.filter((comment) => comment.postId === parent.id);
     },
   },
 };
