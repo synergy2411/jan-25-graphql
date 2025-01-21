@@ -44,3 +44,21 @@ query fetchUsers{
     }
   }
 }
+
+# Fetching posts -> comments || author
+query fetchPosts{
+  posts{
+    id
+    title
+    body
+    published
+    comments{
+      id
+      text
+    }
+    author{
+      id
+      name
+    }
+  }
+}
