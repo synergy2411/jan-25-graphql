@@ -9,19 +9,33 @@ const users = [
 
 // Post should contain id, title, body and published fields
 const posts = [
-  { id: "p001", title: "GraphQL 101", body: "Awesome Blog", published: true },
+  {
+    id: "p001",
+    title: "GraphQL 101",
+    body: "Awesome Blog",
+    published: true,
+    author: "u003",
+  },
   {
     id: "p002",
     title: "Spring in Java",
     body: "Like it❤️❤️",
     published: false,
+    author: "u001",
   },
-  { id: "p003", title: "Refresh React", body: "Very fast", published: true },
+  {
+    id: "p003",
+    title: "Refresh React",
+    body: "Very fast",
+    published: true,
+    author: "u002",
+  },
   {
     id: "p004",
     title: "Beginning with Node",
     body: "NodeJS Fundamentals",
     published: false,
+    author: "u001",
   },
 ];
 
@@ -46,6 +60,7 @@ const typeDefs = /* GraphQL */ `
     id: ID!
     name: String!
     age: Int!
+    posts: [Post!]!
   }
   type Post {
     id: ID!
@@ -108,6 +123,11 @@ const resolvers = {
     },
     comments: (parent, args, context, info) => {
       return comments;
+    },
+  },
+  User: {
+    posts: (parent, args, context, info) => {
+      return posts.filter((post) => post.author === parent.id);
     },
   },
 };
