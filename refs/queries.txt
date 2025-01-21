@@ -142,3 +142,12 @@ mutation createPost{
     published
   }
 }
+
+
+# Deleting comment
+mutation deleteComment{
+  deleteComment(commentId:"c099"){
+    id
+    text
+  }
+}
