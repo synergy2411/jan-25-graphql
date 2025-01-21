@@ -1,5 +1,7 @@
 import { createSchema, createYoga } from "graphql-yoga";
+import { GraphQLError } from "graphql";
 import { createServer } from "node:http";
+import { v4 } from "uuid";
 
 const users = [
   { id: "u001", name: "monica geller", age: 21 },
@@ -50,6 +52,11 @@ const comments = [
 
 // typeDefs - define capabilities of server
 const typeDefs = /* GraphQL */ `
+  type Mutation {
+    createUser(name: String!, age: Int!): User!
+    createPost(authorId: ID!, title: String!, body: String!): Post!
+  }
+
   type Query {
     hello: String!
     users(query: String, order: String): [User!]!
@@ -81,6 +88,35 @@ const typeDefs = /* GraphQL */ `
 
 // resolvers - implementation of typeDefs
 const resolvers = {
+  Mutation: {
+    createUser: (parent, args, context, info) => {
+      const { name, age } = args;
+      let newUser = {
+        id: v4(),
+        name,
+        age,
+      };
+      users.push(newUser);
+      return newUser;
+    },
+    createPost: (parent, args, context, info) => {
+      const { authorId, title, body } = args;
+      const position = users.findIndex((user) => user.id === authorId);
+      if (position === -1) {
+        throw new GraphQLError("Unable to find author for id - " + authorId);
+      }
+      const newPost = {
+        id: v4(),
+        title,
+        body,
+        published: false,
+        author: authorId,
+      };
+
+      posts.push(newPost);
+      return newPost;
+    },
+  },
   Query: {
     hello: () => "World!",
     users: (parent, args, context, info) => {

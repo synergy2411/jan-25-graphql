@@ -122,3 +122,23 @@ query fetchPosts{
     }
   }
 }
+
+# Creating User
+mutation createUser{
+  createUser(name:"Ross Geller", age:24){
+    id
+    name
+    age
+  }
+}
+
+
+# Creating Post
+mutation createPost{
+  createPost(authorId:"u099", title:"Advanced Angular", body:"for advance developers"){
+    id
+    title
+    body
+    published
+  }
+}
