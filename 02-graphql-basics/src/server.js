@@ -57,6 +57,7 @@ const typeDefs = /* GraphQL */ `
   type Mutation {
     createUser(name: String!, age: Int!): User!
     deleteUser(userId: ID!): User!
+    updateUser(userId: ID!, data: UpdateUserInput): User!
     createPost(authorId: ID!, title: String!, body: String!): Post!
     deletePost(postId: ID!): Post!
     createComment(data: CreateCommentInput): Comment!
@@ -96,6 +97,11 @@ const typeDefs = /* GraphQL */ `
     postId: ID!
     creator: ID!
   }
+
+  input UpdateUserInput {
+    name: String
+    age: Int
+  }
 `;
 
 // resolvers - implementation of typeDefs
@@ -132,6 +138,23 @@ const resolvers = {
       const [deletedUser] = users.splice(position, 1);
 
       return deletedUser;
+    },
+    updateUser: (parent, args, context, info) => {
+      const { name, age } = args.data;
+      const position = users.findIndex((user) => user.id === args.userId);
+      if (position === -1) {
+        throw new GraphQLError("Unable to update user for id - " + args.userId);
+      }
+
+      if (typeof name === "string") {
+        users[position].name = name;
+      }
+
+      if (typeof age === "number") {
+        users[position].age = age;
+      }
+
+      return users[position];
     },
     createPost: (parent, args, context, info) => {
       const { authorId, title, body } = args;
