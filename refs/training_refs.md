@@ -66,10 +66,17 @@ age
   > npm install graphql-yoga graphql
 - Installing nodemon : restarts server automatically on file save
   > npm install nodemon -D
-- Create Schema
+- Create Schema : typeDefs & resolvers
 - Create Graphql Yoga Server
 - Create Node Http Server
-- Run Http Server on some port
+- Run Http Server on some port : 4000
 
 > npm run start
 > npm run devStart
+
+# Modules
+
+- ECMAScript Module (ESM)
+- CommonJS Module System (default in NodeJS)
+- AMD
+- UMD

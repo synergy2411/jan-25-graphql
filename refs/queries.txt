@@ -1,0 +1,26 @@
+# Fetch Users
+query fetchUsers ($order: String){
+  users (order: $order){
+    id
+    name
+    age
+  }
+}
+
+# Fetch Posts
+query fetchPosts{
+  posts (query: "it"){
+    id
+    title
+    body
+    published
+  }
+}
+
+# Fetch comments
+query fetchComments{
+  comments{
+    id
+    text
+  }
+}

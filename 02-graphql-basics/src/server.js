@@ -90,12 +90,12 @@ const resolvers = {
       }
       if (args.query) {
         return users.filter((user) =>
+          // user.name === args.query
           user.name.includes(args.query.toLowerCase())
         );
       }
       return users;
     },
-
     posts: (parent, args, context, info) => {
       if (args.query) {
         return posts.filter(
