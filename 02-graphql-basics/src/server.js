@@ -3,14 +3,16 @@ import { GraphQLError } from "graphql";
 import { createServer } from "node:http";
 import { v4 } from "uuid";
 
-const users = [
+let users = [
   { id: "u001", name: "monica geller", age: 21 },
   { id: "u002", name: "rachel green", age: 22 },
   { id: "u003", name: "chandler bing", age: 24 },
 ];
 
+// u002 -> p003, c001, c003, c004
+
 // Post should contain id, title, body and published fields
-const posts = [
+let posts = [
   {
     id: "p001",
     title: "GraphQL 101",
@@ -41,7 +43,7 @@ const posts = [
   },
 ];
 
-const comments = [
+let comments = [
   { id: "c001", text: "like it", postId: "p004", creator: "u002" },
   { id: "c002", text: "luv it", postId: "p002", creator: "u003" },
   { id: "c003", text: "just like that", postId: "p004", creator: "u002" },
@@ -55,6 +57,7 @@ const typeDefs = /* GraphQL */ `
   type Mutation {
     createUser(name: String!, age: Int!): User!
     createPost(authorId: ID!, title: String!, body: String!): Post!
+    deletePost(postId: ID!): Post!
     createComment(data: CreateCommentInput): Comment!
     deleteComment(commentId: ID!): Comment!
   }
@@ -123,6 +126,17 @@ const resolvers = {
 
       posts.push(newPost);
       return newPost;
+    },
+    deletePost: (parent, args, context, info) => {
+      const position = posts.findIndex((post) => post.id === args.postId);
+      if (position === -1) {
+        throw new GraphQLError("Unable to delete post for id - " + args.postId);
+      }
+
+      comments = comments.filter((comment) => comment.postId !== args.postId);
+
+      const [deletedPost] = posts.splice(position, 1);
+      return deletedPost;
     },
     createComment: (parent, args, context, info) => {
       const { text, creator, postId } = args.data;
