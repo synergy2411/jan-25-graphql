@@ -88,3 +88,22 @@ age
 - Prisma ORM - RDBMS as well as NoSQL
 - Protected Resources (JWT Token)
 - Client side
+
+Username : synergy
+Password: QvRvQUutVQSDDRL0
+
+# Mongo Atlas Connection String -
+
+mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/?retryWrites=true&w=majority&appName=MyDemoCluster
+
+mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
+
+# Steps for connecting Graphql Server with Prisma and MongoDB
+
+> npm init -y
+> npm install prisma --save-dev
+> npx prisma init
+> Update DATABASE_URL and provider property
+> npx prisma db pull (for introspection)
+> npx prisma db push (for pushing the prisma schema collection)
+> npm install @prisma/client
