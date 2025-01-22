@@ -109,3 +109,8 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npm install @prisma/client
 > npm install graphql-yoga graphql
 > npm install nodemon -D
+
+- User Registration : store user info into DB
+- User Login : validate user credentials and generate the token
+- Create Post : User validation through token
+- Fetch Posts : All the posts without authentication
