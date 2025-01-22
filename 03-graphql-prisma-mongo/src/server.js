@@ -13,6 +13,7 @@ const prisma = new PrismaClient();
 const typeDefs = /* GraphQL */ `
   type Query {
     hello: String!
+    posts: [Post!]!
   }
   type Mutation {
     userRegistration(data: UserRegistrationInput!): UserRegistrationPayload!
@@ -41,11 +42,19 @@ const typeDefs = /* GraphQL */ `
     password: String!
   }
 
+  type User {
+    id: ID!
+    name: String!
+    age: Int!
+    email: String!
+    role: Role!
+  }
   type Post {
     id: ID!
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 
   input CreatePostInput {
@@ -62,6 +71,19 @@ const typeDefs = /* GraphQL */ `
 const resolvers = {
   Query: {
     hello: () => "World!",
+    posts: async (parent, args, context, info) => {
+      try {
+        const allPosts = await prisma.post.findMany({
+          include: {
+            author: true,
+          },
+        });
+        return allPosts;
+      } catch (err) {
+        console.log(err);
+        throw new GraphQLError(err);
+      }
+    },
   },
   Mutation: {
     userRegistration: async (parent, args, context, info) => {
