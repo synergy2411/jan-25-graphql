@@ -80,3 +80,11 @@ age
 - CommonJS Module System (default in NodeJS)
 - AMD
 - UMD
+
+---
+
+- MongoDB ( MongoDB Atlas - Cloud Version)
+- Mongo Compass - GUI Client
+- Prisma ORM - RDBMS as well as NoSQL
+- Protected Resources (JWT Token)
+- Client side
