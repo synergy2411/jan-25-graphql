@@ -2,6 +2,9 @@ import { GraphQLError } from "graphql";
 import { createSchema, createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
+const { hashSync, compareSync } = bcrypt;
 
 const prisma = new PrismaClient();
 
@@ -11,6 +14,7 @@ const typeDefs = /* GraphQL */ `
   }
   type Mutation {
     userRegistration(data: UserRegistrationInput!): UserRegistrationPayload!
+    userLogin(data: UserLoginInput!): UserLoginPayload!
   }
 
   type UserRegistrationPayload {
@@ -23,6 +27,15 @@ const typeDefs = /* GraphQL */ `
     email: String!
     password: String!
     role: Role
+  }
+
+  type UserLoginPayload {
+    token: String!
+  }
+
+  input UserLoginInput {
+    email: String!
+    password: String!
   }
   enum Role {
     DEVELOPER
@@ -40,12 +53,13 @@ const resolvers = {
       try {
         let { name, age, email, password, role } = args.data;
         role = role ? role : "DEVELOPER";
+        const hashedPassword = hashSync(password, 12);
         const createdUser = await prisma.user.create({
           data: {
             name,
             age,
             email,
-            password,
+            password: hashedPassword,
             role,
           },
         });
@@ -53,6 +67,23 @@ const resolvers = {
           throw new GraphQLError("Unable to create new user!");
         }
         return { message: "User created successfully." };
+      } catch (err) {
+        console.log(err);
+        throw new GraphQLError(err);
+      }
+    },
+    userLogin: async (parent, args, context, info) => {
+      try {
+        const { email, password } = args.data;
+        const foundUser = await prisma.user.findUnique({ where: { email } });
+        if (!foundUser) {
+          throw new GraphQLError("Unable to find email - " + email);
+        }
+        const isMatched = compareSync(password, foundUser.password);
+        if (!isMatched) {
+          throw new GraphQLError("Bad passwrod!");
+        }
+        return { token: "user validated" };
       } catch (err) {
         console.log(err);
         throw new GraphQLError(err);
