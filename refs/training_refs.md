@@ -107,3 +107,5 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npx prisma db pull (for introspection)
 > npx prisma db push (for pushing the prisma schema collection)
 > npm install @prisma/client
+> npm install graphql-yoga graphql
+> npm install nodemon -D

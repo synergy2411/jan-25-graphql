@@ -1,50 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import { createSchema, createYoga } from "graphql-yoga";
+import { createServer } from "node:http";
 
-const prisma = new PrismaClient();
+const typeDefs = /* GraphQL */ `
+  type Query {
+    hello: String!
+  }
+`;
 
-async function main() {
-  const deletedRecord = await prisma.user.delete({
-    where: {
-      email: "ross@test.com",
-    },
-  });
+const resolvers = {
+  Query: {
+    hello: () => "World!",
+  },
+};
 
-  console.log(deletedRecord);
+const schema = createSchema({
+  typeDefs,
+  resolvers,
+});
 
-  //   const allUsers = await prisma.user.findMany({
-  //     skip: 1,
-  //     take: 1,
-  //     orderBy: {
-  //       name: "asc",
-  //     },
+const yoga = createYoga({
+  schema,
+});
 
-  //     // where: {
-  //     //   age: {
-  //     //     gte: 23,
-  //     //   },
-  //     // },
-  //   });
-  //   console.log(allUsers);
+const server = createServer(yoga);
 
-  //   const createdUser = await prisma.user.create({
-  //     data: {
-  //       name: "rachel green",
-  //       age: 22,
-  //       email: "rachel@test.com",
-  //       password: "rachel123",
-  //       role: "MANAGER",
-  //     },
-  //   });
-
-  //   console.log(createdUser);
-}
-
-main()
-  .catch(async (err) => {
-    console.log(err);
-    await prisma.$disconnect();
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+server.listen(4040, () => console.log("Yoga running on PORT : 4040"));
