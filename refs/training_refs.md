@@ -110,6 +110,7 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npm install graphql-yoga graphql
 > npm install nodemon -D
 > npm install bcrypt (for hashify password)
+> npm install jsonwebtoken (for JWT)
 
 - User Registration : store user info into DB
 - User Login : validate user credentials and generate the token

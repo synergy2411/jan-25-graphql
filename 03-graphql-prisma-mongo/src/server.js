@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const { sign } = jwt;
+const { sign, verify } = jwt;
 const { hashSync, compareSync } = bcrypt;
 const SECRET_KEY = "MY_SUPER_SECRET_KEY";
 const prisma = new PrismaClient();
@@ -17,6 +17,7 @@ const typeDefs = /* GraphQL */ `
   type Mutation {
     userRegistration(data: UserRegistrationInput!): UserRegistrationPayload!
     userLogin(data: UserLoginInput!): UserLoginPayload!
+    createPost(data: CreatePostInput!): Post!
   }
 
   type UserRegistrationPayload {
@@ -38,6 +39,18 @@ const typeDefs = /* GraphQL */ `
   input UserLoginInput {
     email: String!
     password: String!
+  }
+
+  type Post {
+    id: ID!
+    title: String!
+    body: String!
+    published: Boolean!
+  }
+
+  input CreatePostInput {
+    title: String!
+    body: String!
   }
   enum Role {
     DEVELOPER
@@ -98,6 +111,40 @@ const resolvers = {
         throw new GraphQLError(err);
       }
     },
+    createPost: async (parent, args, { token }, info) => {
+      if (!token) {
+        throw new GraphQLError("Auth required.");
+      }
+
+      try {
+        const { title, body } = args.data;
+
+        const { id, name, role, age, iat } = verify(token, SECRET_KEY);
+
+        // const foundUser = await prisma.user.findFirst({
+        //   where: { id: args.authorId },
+        // });
+        // if (!foundUser) {
+        //   throw new GraphQLError(
+        //     "Unable to find user for id - " + args.authorId
+        //   );
+        // }
+
+        const createdPost = await prisma.post.create({
+          data: {
+            title,
+            body,
+            published: false,
+            // authorId: args.authorId,
+            authorId: id,
+          },
+        });
+        return createdPost;
+      } catch (err) {
+        console.log(err);
+        throw new GraphQLError(err);
+      }
+    },
   },
 };
 
@@ -108,6 +155,14 @@ const schema = createSchema({
 
 const yoga = createYoga({
   schema,
+  context: ({ request }) => {
+    const authHeader = request.headers.get("authorization");
+    let token = null;
+    if (authHeader) {
+      token = authHeader.split(" ")[1]; //"Bearer TOKEN_VALUE"
+    }
+    return { token };
+  },
 });
 
 const server = createServer(yoga);
