@@ -3,9 +3,11 @@ import { createSchema, createYoga } from "graphql-yoga";
 import { createServer } from "node:http";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
+const { sign } = jwt;
 const { hashSync, compareSync } = bcrypt;
-
+const SECRET_KEY = "MY_SUPER_SECRET_KEY";
 const prisma = new PrismaClient();
 
 const typeDefs = /* GraphQL */ `
@@ -83,7 +85,14 @@ const resolvers = {
         if (!isMatched) {
           throw new GraphQLError("Bad passwrod!");
         }
-        return { token: "user validated" };
+        let payload = {
+          id: foundUser.id,
+          email: foundUser.email,
+          role: foundUser.role,
+          name: foundUser.name,
+        };
+        const token = sign(payload, SECRET_KEY);
+        return { token };
       } catch (err) {
         console.log(err);
         throw new GraphQLError(err);
