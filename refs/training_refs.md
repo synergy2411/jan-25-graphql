@@ -112,7 +112,17 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npm install bcrypt (for hashify password)
 > npm install jsonwebtoken (for JWT)
 
+# Prisma Mongo Project Functionalities
+
 - User Registration : store user info into DB
 - User Login : validate user credentials and generate the token
 - Create Post : User validation through token
 - Fetch Posts : All the posts without authentication
+
+# Client side JavaScript Project
+
+> npm create vite@latest
+> cd frontend-js
+> npm install
+> npm run dev
+> npm install @apollo/client graphql react
