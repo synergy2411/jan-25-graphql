@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
 import HomePage from "./Pages/HomePage";
 import PostsPage from "./Pages/PostsPage";
 import RootLayoutPage from "./Pages/RootLayoutPage";
+import client from "./apollo/client";
 
 const router = createBrowserRouter([
   {
@@ -15,7 +17,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ApolloProvider client={client}>
+      <RouterProvider router={router} />;
+    </ApolloProvider>
+  );
 }
 
 export default App;

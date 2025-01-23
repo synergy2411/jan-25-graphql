@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 function MainNavigation() {
   return (
-    <header className="text-center">
+    <header>
       <ul className="nav nav-tabs text-center">
         <li className="nav-item">
           <NavLink className="nav-link" to="/">
