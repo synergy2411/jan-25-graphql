@@ -102,7 +102,7 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 
 > npm init -y
 > npm install prisma --save-dev
-> npx prisma init
+> npx prisma init (creates schema.prisma and .env)
 > Update DATABASE_URL and provider property
 > npx prisma db pull (for introspection)
 > npx prisma db push (for pushing the prisma schema collection)
@@ -126,3 +126,17 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npm install
 > npm run dev
 > npm install @apollo/client graphql react
+
+---
+
+# Client side app - React
+
+> npm create vite@latest
+> cd frontend-react
+> npm install
+> npm run dev
+> npm install react-router-dom@6
+> npm install @apollo/client graphql
+> npm install bootstrap
+
+# Testing - Jest
