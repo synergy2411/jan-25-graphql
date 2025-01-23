@@ -1,6 +1,36 @@
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
 import classes from "./PostForm.module.css";
+import CREATE_POST from "../apollo/create-post";
 
 function PostForm() {
+  const navigate = useNavigate();
+  const titleInputRef = useRef();
+  const bodyInputRef = useRef();
+
+  const [createPostMutation] = useMutation(CREATE_POST);
+
+  const saveHandler = async (e) => {
+    e.preventDefault();
+    console.log(titleInputRef.current.value, bodyInputRef.current.value);
+    try {
+      const { data } = await createPostMutation({
+        variables: {
+          title: titleInputRef.current.value,
+          body: bodyInputRef.current.value,
+        },
+      });
+      console.log(data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const cancelHandler = () => {
+    navigate("/posts");
+  };
+
   return (
     <div className={classes["backdrop"]}>
       <div className={classes["my-modal"]}>
@@ -14,6 +44,7 @@ function PostForm() {
               name="title"
               id="title"
               placeholder=""
+              ref={titleInputRef}
             />
             <label htmlFor="title">Title</label>
           </div>
@@ -27,6 +58,7 @@ function PostForm() {
               id="body"
               rows="3"
               placeholder="Write your message here..."
+              ref={bodyInputRef}
             ></textarea>
           </div>
 
@@ -34,12 +66,16 @@ function PostForm() {
           <div className="row">
             <div className="col">
               <div className="d-grid">
-                <button className="btn btn-primary">Save</button>
+                <button onClick={saveHandler} className="btn btn-primary">
+                  Save
+                </button>
               </div>
             </div>
             <div className="col">
               <div className="d-grid">
-                <button className="btn btn-secondary">Cancel</button>
+                <button onClick={cancelHandler} className="btn btn-secondary">
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
