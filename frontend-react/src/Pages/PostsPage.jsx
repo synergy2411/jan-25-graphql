@@ -3,7 +3,9 @@ import FETCH_POSTS from "../apollo/fetch-posts";
 import PostItem from "../Components/PostItem";
 
 function PostsPage() {
-  const { data, error, loading, refetch } = useQuery(FETCH_POSTS);
+  const { data, error, loading, refetch } = useQuery(FETCH_POSTS, {
+    // pollInterval: 1000,
+  });
 
   if (loading) return <h1>Loading...</h1>;
 

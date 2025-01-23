@@ -140,3 +140,7 @@ mongodb+srv://synergy:QvRvQUutVQSDDRL0@mydemocluster.e9xsq.mongodb.net/blog-db
 > npm install bootstrap
 
 # Testing - Jest
+
+> npm install jest jest-environment-jsdom cross-fetch -D
+> npm init jest
+> npm run test
