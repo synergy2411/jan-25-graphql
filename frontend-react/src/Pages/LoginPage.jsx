@@ -1,8 +1,13 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import USER_LOGIN from "../apollo/user-login";
+import AuthContext from "../context/auth-context";
 
 function LoginPage() {
+  const context = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -20,7 +25,11 @@ function LoginPage() {
         },
       });
       console.log(data);
+      localStorage.setItem("token", data.userLogin.token);
+      context.token = data.userLogin.token;
+      context.setIsLoggedIn(true);
       setErrorMessage(null);
+      navigate("/posts");
     } catch (err) {
       console.log(err.message);
       setErrorMessage(err.message);

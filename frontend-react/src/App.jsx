@@ -5,6 +5,8 @@ import PostsPage from "./Pages/PostsPage";
 import RootLayoutPage from "./Pages/RootLayoutPage";
 import client from "./apollo/client";
 import LoginPage from "./Pages/LoginPage";
+import AuthContext from "./context/auth-context";
+import { useState } from "react";
 
 const router = createBrowserRouter([
   {
@@ -19,9 +21,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />;
+      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <RouterProvider router={router} />;
+      </AuthContext.Provider>
     </ApolloProvider>
   );
 }
