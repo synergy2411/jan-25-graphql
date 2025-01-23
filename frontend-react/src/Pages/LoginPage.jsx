@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
 import USER_LOGIN from "../apollo/user-login";
 
@@ -6,18 +6,25 @@ function LoginPage() {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [userLoginMutation, { data, loading, error }] = useMutation(USER_LOGIN);
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    const { data } = await userLoginMutation({
-      variables: {
-        email: emailInputRef.current.value,
-        password: passwordInputRef.current.value,
-      },
-    });
-
-    console.log(data);
+    try {
+      const { data } = await userLoginMutation({
+        variables: {
+          email: emailInputRef.current.value,
+          password: passwordInputRef.current.value,
+        },
+      });
+      console.log(data);
+      setErrorMessage(null);
+    } catch (err) {
+      console.log(err.message);
+      setErrorMessage(err.message);
+    }
   };
 
   return (
@@ -26,6 +33,13 @@ function LoginPage() {
         <div className="card">
           <div className="card-body">
             <h2 className="text-center">Login Page</h2>
+
+            {errorMessage && (
+              <div className="alert alert-danger">
+                <p>{errorMessage}</p>
+              </div>
+            )}
+
             <form onSubmit={submitHandler}>
               {/* email */}
               <div className="form-floating mb-3">
