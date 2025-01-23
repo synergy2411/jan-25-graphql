@@ -32,6 +32,13 @@ function MainNavigation() {
                 </NavLink>
               </li>
             )}
+            {context.isLoggedIn && (
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/create-post">
+                  Create Post
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
         <div className="col-4">

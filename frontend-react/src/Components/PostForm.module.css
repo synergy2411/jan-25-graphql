@@ -1,0 +1,20 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  background-color: #444;
+}
+
+.my-modal {
+  position: fixed;
+  top: 15vh;
+  left: 30vw;
+  width: 40vw;
+  height: 50vh;
+  z-index: 70;
+  background-color: #fff;
+  padding: 24px;
+}

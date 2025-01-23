@@ -24,14 +24,12 @@ function LoginPage() {
           password: passwordInputRef.current.value,
         },
       });
-      console.log(data);
       localStorage.setItem("token", data.userLogin.token);
       context.token = data.userLogin.token;
       context.setIsLoggedIn(true);
       setErrorMessage(null);
       navigate("/posts");
     } catch (err) {
-      console.log(err.message);
       setErrorMessage(err.message);
     }
   };
