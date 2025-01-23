@@ -9,7 +9,7 @@ function PostsPage() {
 
   return (
     <>
-      <h1>Posts Page Loaded!</h1>
+      <h1 className="text-center">List of All Posts</h1>
       {error && <p>{error}</p>}
       <div className="row">
         {data && data.posts.map((post) => <PostItem {...post} key={post.id} />)}
