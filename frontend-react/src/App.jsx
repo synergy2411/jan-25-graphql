@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePage";
 import PostsPage from "./Pages/PostsPage";
 import RootLayoutPage from "./Pages/RootLayoutPage";
 import client from "./apollo/client";
+import LoginPage from "./Pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/posts", element: <PostsPage /> },
+      { path: "/login", element: <LoginPage /> },
     ],
   },
 ]);
