@@ -21,7 +21,7 @@ function PostForm() {
           body: bodyInputRef.current.value,
         },
       });
-      console.log(data);
+      navigate("/posts");
     } catch (err) {
       console.log(err.message);
     }
